@@ -5,6 +5,16 @@ We can put all our code files in there.
 
 We could make another folder for the report/presentation, but also keep them in this repository so we can all make changes and collaborate.
 
+## Getting started
+If not already installed, download git from https://git-scm.com/downloads and go through the installer.
+
+If not done so already, you will need to set up an ssh key, which github will use to authenticate you. See here: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
+
+Open up a terminal (git bash on windows), navigate to a folder where you want to store the files and run the command "git clone git@github.com:Le5tes/robot-reinforcement-learning.git"
+
+This should create a directory called robot-reinforcment-learning, with this readme and our code files inside.
+
+## Useful commands
 ### Shell commands
 Here are some useful commands for navigating when using a bash terminal (e.g. git bash)
 
