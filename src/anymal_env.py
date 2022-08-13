@@ -8,6 +8,7 @@ class ConfigurableANYmal(ANYmalJiminyEnv):
     def set_reward_function(self, reward_function):
         self.reward_function = reward_function
 
+
 # returns -10 if the robot has fallen over else 1
 def simple_standing_reward(self, info):
     return -10 if self.is_done() else 1
