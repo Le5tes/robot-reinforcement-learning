@@ -7,8 +7,12 @@ The guide was tested on Ubuntu 18.04 LTS and 22.04 LTS. Windows system was not r
 
 Python version is 3.7.13. Python 3.10 is not recommended for some compatible issues encountered.
 
+
 ## Procedure
 It is recommended to create a virtual environment, and do all actions in that environment. 
+
+***PLEASE NOTE: the version of Gym used by gym-jiminy (for ANYmal, i.e. 0.23.1) is incompatible with Mujoco (for ANT-v4, i.e. 0.25.1), setting two separate virtual environment is essential!***
+
 1. Download your system version of Mujoco 150 (**NOT 200**) engine from http://www.roboti.us/download.html, unzip, put folder **mjpro150** in
 **/home/{youraccount}/.mujoco/**
 
@@ -20,3 +24,4 @@ It is recommended to create a virtual environment, and do all actions in that en
 - pip install lockfile numpy matplotlib
 6. pip install -U mujoco-py==1.50.1.68 
 7. pip install gym[mujoco]
+
