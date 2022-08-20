@@ -6,7 +6,7 @@ The observation returned from when we call the "step" function contains the foll
 - sensors 
 
 ## State
-State contains two fields:
+State contains two vectors:
 - Q
 - V
 
