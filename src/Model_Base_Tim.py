@@ -1,3 +1,4 @@
+from tensorflow import clip_by_value
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.activations import tanh
@@ -69,16 +70,13 @@ class Memory:
         return TransitionBatch(np.array(self.items.list)[choices])
 
 def build_actor_model(env, compact = False):
-    def activation(tensor_in):
-        return tanh(tensor_in) * 80
-
     layer_size = 128 if compact else 1024
 
     model = Sequential()
-    model.add(Dense(1000, activation='relu', input_shape=(len(env.state[0]) + len(env.state[1]),)))
-    model.add(Dense(1000, activation='relu'))
-    model.add(Dense(1000, activation='relu'))
-    model.add(Dense(env.action_space.shape[0], activation=activation))
+    model.add(Dense(layer_size, activation='relu', input_shape=(len(env.state[0]) + len(env.state[1]),)))
+    model.add(Dense(layer_size, activation='relu'))
+    model.add(Dense(layer_size, activation='relu'))
+    model.add(Dense(env.action_space.shape[0], activation=action_activation))
 
     model.compile(optimizer='adam')
     return model
@@ -100,5 +98,5 @@ def get_flattened_state(observation):
 def action_gaussian_noise(scale, env):
     return [np.random.normal(scale=scale) for _ in range(env.action_space.shape[0])]
 
-def sanitize_action(action):
-    return [80 if a > 80 else -80 if a < -80 else a for a in (action)]
+def action_activation(tensor_in):
+    return clip_by_value(tanh(tensor_in) * 80, -80, 80)

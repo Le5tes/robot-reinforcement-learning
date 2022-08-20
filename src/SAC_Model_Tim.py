@@ -1,4 +1,4 @@
-from Model_Base_Tim import Memory, sanitize_action, Transition, TransitionBatch, build_actor_model, build_critic_model
+from Model_Base_Tim import Memory, Transition, TransitionBatch, build_actor_model, build_critic_model, action_activation
 from tensorflow import clip_by_value, GradientTape, concat, reduce_mean, math
 from tensorflow.keras import Model
 from tensorflow.keras.models import Sequential
@@ -11,8 +11,6 @@ import tensorflow_probability
 Normal = tensorflow_probability.distributions.Normal
 
 
-def action_activation(tensor_in):
-    return clip_by_value(tanh(tensor_in) * 80, -80, 80)
 
 def log_std_clip(tensor_in):
     return clip_by_value(tensor_in,-20,2)
@@ -126,7 +124,6 @@ def sac_learn(env, discount, no_episodes, learn_rate, alpha, s_l, prioritised = 
                 y = t.rewards + discount * target_value
 
                 # calculate priorities for future batches
-
                 if prioritised:
                     c1 = critic_model_1(concat((t.states, t.actions),axis=1))
                     c2 = critic_model_1(concat((t.states, t.actions),axis=1))
