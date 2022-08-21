@@ -36,6 +36,6 @@ def smooth_forward_reward_2(jerkiness_penalty):
 def smooth_forward_reward_3(jerkiness_penalty):
     def _reward(self, info):
         height = self.state[0][2] / self._height_neutral if self.state[0][2] < self._height_neutral else 1  
-        jerkiness = jerkiness_penalty * math.sqrt(sum([self.state[1][x] ** 2 for x in range(1,6)]))
-        return -10 if self.is_done() else (10 + self.state[1][0])* height / (1 + jerkiness)
+        jerkiness = jerkiness_penalty * sum([self.state[1][x] ** 2 for x in range(1,18)])
+        return -100 if self.is_done() else (10 + min(self.state[1][0], 10))* height / (1 + jerkiness)
     return _reward

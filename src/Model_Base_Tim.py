@@ -2,6 +2,7 @@ from tensorflow import clip_by_value
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.activations import tanh
+from tensorflow.keras.optimizers import Adam
 from collections import namedtuple
 import numpy as np
 # rng = np.random.Generator(np.random.SFC64())
@@ -78,7 +79,7 @@ def build_actor_model(env, compact = False):
     model.add(Dense(layer_size, activation='relu'))
     model.add(Dense(env.action_space.shape[0], activation=action_activation))
 
-    model.compile(optimizer='adam')
+    model.compile(optimizer=Adam(learning_rate=0.00001))
     return model
 
 def build_critic_model(env, compact = False):
@@ -89,7 +90,7 @@ def build_critic_model(env, compact = False):
     model.add(Dense(layer_size, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 
-    model.compile(loss='huber', optimizer='adam')
+    model.compile(loss='huber', optimizer=Adam(learning_rate=0.00001))
     return model
 
 def get_flattened_state(observation):
