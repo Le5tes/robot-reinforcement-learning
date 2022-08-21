@@ -5,6 +5,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense,  Input
 from tensorflow.keras.activations import tanh
 from tensorflow.keras.losses import huber
+from tensorflow.keras.optimizers import Adam
 from timeit import default_timer as timer
 import numpy as np
 import tensorflow_probability
@@ -27,7 +28,7 @@ class PolicyModel:
         logStdOut = Dense(action_size, activation=log_std_clip, name='policy-l-dense')(shared3)
 
         self.model = Model(inputs = input_l, outputs = [meanOut, logStdOut])
-        self.model.compile(optimizer='adam')
+        self.model.compile(optimizer=Adam(learning_rate=0.00001))
 
     def get_action(self, state):
         mean, logStd = self.model(np.array([state]))
@@ -64,7 +65,7 @@ def build_value_model(env, compact = False):
     model.add(Dense(layer_size, activation='relu', name='value-dense3'))
     model.add(Dense(1, activation="tanh", name='value-dense4'))
 
-    model.compile(loss='huber', optimizer='adam')
+    model.compile(loss='huber', optimizer=Adam(learning_rate=0.00001))
     return model
 
 
@@ -75,7 +76,7 @@ def sac_learn(env, discount, no_episodes, learn_rate, alpha, s_l, prioritised = 
         return [learn_rate * weight + (1-learn_rate)* target_weights[i] for i, weight in enumerate(model_weights)]
 
     env.reset()
-    memory = Memory(10 * s_l, prioritised=prioritised)
+    memory = Memory(16 * s_l, prioritised=prioritised)
     value_model = build_value_model(env, compact)
     target_value_model = build_value_model(env, compact)
     critic_model_1 = build_critic_model(env,compact)
@@ -88,7 +89,7 @@ def sac_learn(env, discount, no_episodes, learn_rate, alpha, s_l, prioritised = 
         i += 1
         if (i% 100 == 0):
             print("saving backup")
-            policy_model.save("sac_backup_8")
+            policy_model.save("sac_backup_R")
         env.reset()
         state = np.concatenate(env.state)
         done = False
